@@ -1,6 +1,8 @@
 # PostGen
 
-AI-powered LinkedIn post generator. Create, edit, and publish LinkedIn posts with AI assistance.
+I have reacehd a point in my life where I want to vibe code an application for every task that bothers me. So this again is born from such urge. I have a lot of ideas that I want to post on linkedIn but I am very lazy to write those posts, generate image from Gemini and then upload them. So, I have made this app, so that I can just put my idea in messy words, it will craft a linkedIn post for you. 
+
+This app should cost you, but I won't. If you have your own APIs, then go ahead and put your API keys and generate your images. There is no SaaS stuff going on here. 
 
 ## Tech Stack
 
@@ -33,7 +35,7 @@ AI-powered LinkedIn post generator. Create, edit, and publish LinkedIn posts wit
 
 ```bash
 # 1. Clone and setup
-git clone <repo-url> && cd PostGen
+git clone https://github.com/iashyam/PostGen.git && cd PostGen
 make setup
 
 # 2. Configure environment
