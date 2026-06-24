@@ -1,0 +1,79 @@
+import httpx
+
+
+async def post_to_linkedin(
+    access_token: str,
+    linkedin_id: str,
+    content: str,
+    image_url: str | None = None,
+) -> dict:
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "Content-Type": "application/json",
+        "LinkedIn-Version": "202401",
+        "X-Restli-Protocol-Version": "2.0.0",
+    }
+
+    post_body: dict = {
+        "author": f"urn:li:person:{linkedin_id}",
+        "lifecycleState": "PUBLISHED",
+        "visibility": "PUBLIC",
+        "commentary": content,
+        "distribution": {
+            "feedDistribution": "MAIN_FEED",
+        },
+    }
+
+    if image_url:
+        # Step 1: Register image upload
+        async with httpx.AsyncClient() as client:
+            register_resp = await client.post(
+                "https://api.linkedin.com/rest/images?action=initializeUpload",
+                headers=headers,
+                json={
+                    "initializeUploadRequest": {
+                        "owner": f"urn:li:person:{linkedin_id}",
+                    }
+                },
+            )
+            if register_resp.status_code != 200:
+                raise Exception(f"Failed to register image upload: {register_resp.text}")
+
+            upload_data = register_resp.json()["value"]
+            upload_url = upload_data["uploadUrl"]
+            image_urn = upload_data["image"]
+
+            # Step 2: Download image from S3 and upload to LinkedIn
+            img_resp = await client.get(image_url)
+            await client.put(
+                upload_url,
+                content=img_resp.content,
+                headers={
+                    "Authorization": f"Bearer {access_token}",
+                    "Content-Type": "image/png",
+                },
+            )
+
+            # Step 3: Attach image to post
+            post_body["content"] = {
+                "media": {
+                    "id": image_urn,
+                }
+            }
+
+    # Create post
+    async with httpx.AsyncClient() as client:
+        resp = await client.post(
+            "https://api.linkedin.com/rest/posts",
+            headers=headers,
+            json=post_body,
+        )
+        if resp.status_code not in (200, 201):
+            raise Exception(f"Failed to post to LinkedIn: {resp.text}")
+
+        post_id = resp.headers.get("x-restli-id", "")
+        return {
+            "success": True,
+            "post_id": post_id,
+            "post_url": f"https://www.linkedin.com/feed/update/{post_id}",
+        }
