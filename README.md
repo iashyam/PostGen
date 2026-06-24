@@ -1,1 +1,121 @@
 # PostGen
+
+AI-powered LinkedIn post generator. Create, edit, and publish LinkedIn posts with AI assistance.
+
+## Tech Stack
+
+**Frontend:** React 19, TypeScript, Tailwind CSS v4, Vite, Zustand, TipTap editor, React Router
+
+**Backend:** FastAPI, LangGraph, LangChain + Google Gemini, Motor (async MongoDB), Pillow
+
+**Infrastructure:** MongoDB 7, AWS S3 (image storage), Docker Compose
+
+## Features
+
+- AI post generation powered by Google Gemini via LangGraph
+- Rich text editing with TipTap
+- Draft management (save, edit, delete)
+- Post history tracking
+- LinkedIn OAuth integration for direct publishing
+- Image generation and S3 storage
+- Per-user settings and preferences
+
+## Prerequisites
+
+- Python 3.13+
+- Node.js 18+
+- Docker (for MongoDB)
+- Google API key (Gemini)
+- AWS credentials (S3, for image storage)
+- LinkedIn OAuth app (for publishing)
+
+## Quick Start
+
+```bash
+# 1. Clone and setup
+git clone <repo-url> && cd PostGen
+make setup
+
+# 2. Configure environment
+#    Edit backend/.env with your API keys
+
+# 3. Start database + dev servers
+make dev
+```
+
+Backend runs at `http://localhost:8000`, frontend at `http://localhost:5173`.
+
+## Environment Variables
+
+Copy `backend/.env.example` to `backend/.env` and fill in:
+
+| Variable | Description |
+|---|---|
+| `GOOGLE_API_KEY` | Google AI / Gemini API key |
+| `GEMINI_MODEL` | Model name (default: `gemini-2.0-flash`) |
+| `MONGODB_URI` | MongoDB connection string |
+| `AWS_ACCESS_KEY_ID` | AWS access key for S3 |
+| `AWS_SECRET_ACCESS_KEY` | AWS secret key |
+| `S3_BUCKET` | S3 bucket name for images |
+| `LINKEDIN_CLIENT_ID` | LinkedIn OAuth client ID |
+| `LINKEDIN_CLIENT_SECRET` | LinkedIn OAuth client secret |
+| `SECRET_KEY` | JWT signing secret |
+
+## Make Commands
+
+| Command | Description |
+|---|---|
+| `make setup` | Install deps + create `.env` from example |
+| `make dev` | Start MongoDB, backend, and frontend |
+| `make dev-backend` | Start backend only |
+| `make dev-frontend` | Start frontend only |
+| `make db` | Start MongoDB container |
+| `make db-stop` | Stop MongoDB container |
+| `make up` | Start full stack via Docker Compose |
+| `make down` | Stop all Docker containers |
+| `make build` | Build frontend for production |
+| `make lint` | Run TypeScript type check |
+| `make clean` | Remove build artifacts and caches |
+
+## Project Structure
+
+```
+PostGen/
+├── backend/
+│   └── app/
+│       ├── main.py              # FastAPI app entrypoint
+│       ├── config.py            # Pydantic settings
+│       ├── database.py          # MongoDB connection
+│       ├── models/              # Pydantic models (user, post, draft, settings)
+│       ├── routers/             # API routes (auth, generate, drafts, history, linkedin, settings)
+│       ├── services/            # Business logic (langgraph_chain, linkedin, s3, image)
+│       └── utils/
+├── frontend/
+│   └── src/
+│       ├── pages/               # CreatePost, Drafts, History, Settings
+│       ├── components/          # UI components by feature
+│       ├── store/               # Zustand state management
+│       ├── api/                 # API client
+│       ├── hooks/
+│       └── types/
+├── docker-compose.yml
+└── Makefile
+```
+
+## API
+
+Health check: `GET /api/health`
+
+Core endpoints under `/api`:
+- `POST /generate` — AI post generation
+- `GET/POST/PUT/DELETE /drafts` — Draft CRUD
+- `GET /history` — Post history
+- `POST /linkedin/publish` — Publish to LinkedIn
+- `GET/PUT /settings` — User settings
+
+Auth endpoints under `/api/auth`:
+- LinkedIn OAuth flow
+
+## License
+
+MIT
