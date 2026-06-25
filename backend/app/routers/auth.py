@@ -2,11 +2,11 @@ import secrets
 from datetime import datetime, timezone
 
 import httpx
-from fastapi import APIRouter, HTTPException, Response
+from fastapi import APIRouter, Cookie, HTTPException, Response
 
 from app.config import settings
 from app.database import DB
-from app.utils.auth import create_jwt
+from app.utils.auth import create_access_token, generate_refresh_token, refresh_token_expiry
 
 router = APIRouter()
 
@@ -85,5 +85,74 @@ async def linkedin_callback(db: DB, code: str, state: str, response: Response):
         return_document=True,
     )
 
-    jwt_token = create_jwt(str(user_doc["_id"]))
-    return {"token": jwt_token, "user": {"name": user_doc["name"], "avatar_url": user_doc.get("avatar_url", "")}}
+    user_id = str(user_doc["_id"])
+    access_token = create_access_token(user_id)
+
+    # Create and store refresh token
+    refresh_token = generate_refresh_token()
+    await db.refresh_tokens.insert_one({
+        "token": refresh_token,
+        "user_id": user_id,
+        "expires_at": refresh_token_expiry(),
+        "created_at": now,
+    })
+
+    response.set_cookie(
+        key="refresh_token",
+        value=refresh_token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=30 * 24 * 60 * 60,  # 30 days
+        path="/api/auth",
+    )
+
+    return {"token": access_token, "user": {"name": user_doc["name"], "avatar_url": user_doc.get("avatar_url", "")}}
+
+
+@router.post("/refresh")
+async def refresh(db: DB, response: Response, refresh_token: str | None = Cookie(default=None)):
+    if not refresh_token:
+        raise HTTPException(status_code=401, detail="No refresh token")
+
+    # Find and validate refresh token
+    token_doc = await db.refresh_tokens.find_one({"token": refresh_token})
+    if not token_doc:
+        raise HTTPException(status_code=401, detail="Invalid refresh token")
+
+    if token_doc["expires_at"] < datetime.now(timezone.utc):
+        await db.refresh_tokens.delete_one({"_id": token_doc["_id"]})
+        raise HTTPException(status_code=401, detail="Refresh token expired")
+
+    # Rotate refresh token
+    await db.refresh_tokens.delete_one({"_id": token_doc["_id"]})
+    new_refresh_token = generate_refresh_token()
+    now = datetime.now(timezone.utc)
+    await db.refresh_tokens.insert_one({
+        "token": new_refresh_token,
+        "user_id": token_doc["user_id"],
+        "expires_at": refresh_token_expiry(),
+        "created_at": now,
+    })
+
+    response.set_cookie(
+        key="refresh_token",
+        value=new_refresh_token,
+        httponly=True,
+        secure=True,
+        samesite="lax",
+        max_age=30 * 24 * 60 * 60,
+        path="/api/auth",
+    )
+
+    access_token = create_access_token(token_doc["user_id"])
+    return {"token": access_token}
+
+
+@router.post("/logout")
+async def logout(db: DB, response: Response, refresh_token: str | None = Cookie(default=None)):
+    if refresh_token:
+        await db.refresh_tokens.delete_one({"token": refresh_token})
+
+    response.delete_cookie(key="refresh_token", path="/api/auth")
+    return {"ok": True}

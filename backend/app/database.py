@@ -18,6 +18,8 @@ async def connect_db():
     await db.drafts.create_index([("user_id", 1), ("updated_at", -1)])
     await db.posts_history.create_index([("user_id", 1), ("posted_at", -1)])
     await db.users.create_index("linkedin_id", unique=True, sparse=True)
+    await db.refresh_tokens.create_index("token", unique=True)
+    await db.refresh_tokens.create_index("expires_at", expireAfterSeconds=0)
 
 
 async def close_db():
