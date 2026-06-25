@@ -4,7 +4,7 @@ from bson import ObjectId
 from fastapi import APIRouter, HTTPException
 from pydantic import BaseModel
 
-from app.database import get_db
+from app.database import DB
 from app.services.linkedin_service import post_to_linkedin
 
 router = APIRouter()
@@ -17,8 +17,7 @@ class LinkedInPostRequest(BaseModel):
 
 
 @router.post("/post/linkedin")
-async def create_linkedin_post(request: LinkedInPostRequest):
-    db = get_db()
+async def create_linkedin_post(db: DB, request: LinkedInPostRequest):
     user = await db.users.find_one({"_id": ObjectId(request.user_id)})
     if not user or not user.get("linkedin_access_token"):
         raise HTTPException(status_code=401, detail="LinkedIn not connected")

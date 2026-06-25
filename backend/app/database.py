@@ -1,9 +1,12 @@
-from motor.motor_asyncio import AsyncIOMotorClient
+from typing import Annotated
+
+from fastapi import Depends
+from motor.motor_asyncio import AsyncIOMotorClient, AsyncIOMotorDatabase
 
 from app.config import settings
 
-client: AsyncIOMotorClient = None
-db = None
+client: AsyncIOMotorClient | None = None
+db: AsyncIOMotorDatabase | None = None
 
 
 async def connect_db():
@@ -23,5 +26,8 @@ async def close_db():
         client.close()
 
 
-def get_db():
+def get_db() -> AsyncIOMotorDatabase:
     return db
+
+
+DB = Annotated[AsyncIOMotorDatabase, Depends(get_db)]

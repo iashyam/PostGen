@@ -5,7 +5,7 @@ import httpx
 from fastapi import APIRouter, HTTPException, Response
 
 from app.config import settings
-from app.database import get_db
+from app.database import DB
 from app.utils.auth import create_jwt
 
 router = APIRouter()
@@ -34,14 +34,14 @@ async def linkedin_auth():
 
 
 @router.get("/linkedin/callback")
-async def linkedin_callback(code: str, state: str, response: Response):
+async def linkedin_callback(db: DB, code: str, state: str, response: Response):
     if state not in _oauth_states:
         raise HTTPException(status_code=400, detail="Invalid state parameter")
     del _oauth_states[state]
 
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient() as http_client:
         # Exchange code for token
-        token_resp = await client.post(
+        token_resp = await http_client.post(
             LINKEDIN_TOKEN_URL,
             data={
                 "grant_type": "authorization_code",
@@ -56,15 +56,13 @@ async def linkedin_callback(code: str, state: str, response: Response):
         token_data = token_resp.json()
 
         # Fetch user profile
-        profile_resp = await client.get(
+        profile_resp = await http_client.get(
             LINKEDIN_USERINFO_URL,
             headers={"Authorization": f"Bearer {token_data['access_token']}"},
         )
         if profile_resp.status_code != 200:
             raise HTTPException(status_code=400, detail="Failed to fetch profile")
         profile = profile_resp.json()
-
-    db = get_db()
     now = datetime.now(timezone.utc)
     user_doc = await db.users.find_one_and_update(
         {"linkedin_id": profile["sub"]},

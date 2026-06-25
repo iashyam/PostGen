@@ -1,15 +1,14 @@
 from bson import ObjectId
 from fastapi import APIRouter, HTTPException
 
-from app.database import get_db
+from app.database import DB
 from app.models.settings import UserSettings
 
 router = APIRouter()
 
 
 @router.get("/settings/{user_id}", response_model=UserSettings)
-async def get_settings(user_id: str):
-    db = get_db()
+async def get_settings(db: DB, user_id: str):
     user = await db.users.find_one({"_id": ObjectId(user_id)})
     if not user:
         raise HTTPException(status_code=404, detail="User not found")
@@ -17,8 +16,7 @@ async def get_settings(user_id: str):
 
 
 @router.put("/settings/{user_id}", response_model=UserSettings)
-async def update_settings(user_id: str, user_settings: UserSettings):
-    db = get_db()
+async def update_settings(db: DB, user_id: str, user_settings: UserSettings):
     result = await db.users.find_one_and_update(
         {"_id": ObjectId(user_id)},
         {"$set": {"settings": user_settings.model_dump()}},
