@@ -27,7 +27,7 @@ async def linkedin_auth():
         "client_id": settings.linkedin_client_id,
         "redirect_uri": settings.linkedin_redirect_uri,
         "state": state,
-        "scope": "openid profile email w_member_social",
+        "scope": "openid profile email w_member_social r_organization_social w_organization_social",
     }
     query = "&".join(f"{k}={v}" for k, v in params.items())
     return {"auth_url": f"{LINKEDIN_AUTH_URL}?{query}"}

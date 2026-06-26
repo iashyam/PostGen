@@ -1,11 +1,36 @@
 import httpx
 
 
+async def fetch_managed_pages(access_token: str) -> list[dict]:
+    headers = {
+        "Authorization": f"Bearer {access_token}",
+        "LinkedIn-Version": "202401",
+        "X-Restli-Protocol-Version": "2.0.0",
+    }
+    async with httpx.AsyncClient() as client:
+        resp = await client.get(
+            "https://api.linkedin.com/rest/organizationAcls?q=roleAssignee&role=ADMINISTRATOR&projection=(elements*(organization~(id,localizedName,logoV2(original~:playableStreams))))",
+            headers=headers,
+        )
+        if resp.status_code != 200:
+            return []
+
+        pages = []
+        for element in resp.json().get("elements", []):
+            org = element.get("organization~", {})
+            pages.append({
+                "org_id": str(org.get("id", "")),
+                "name": org.get("localizedName", ""),
+            })
+        return pages
+
+
 async def post_to_linkedin(
     access_token: str,
     linkedin_id: str,
     content: str,
     image_url: str | None = None,
+    org_id: str | None = None,
 ) -> dict:
     headers = {
         "Authorization": f"Bearer {access_token}",
@@ -14,8 +39,13 @@ async def post_to_linkedin(
         "X-Restli-Protocol-Version": "2.0.0",
     }
 
+    if org_id:
+        author = f"urn:li:organization:{org_id}"
+    else:
+        author = f"urn:li:person:{linkedin_id}"
+
     post_body: dict = {
-        "author": f"urn:li:person:{linkedin_id}",
+        "author": author,
         "lifecycleState": "PUBLISHED",
         "visibility": "PUBLIC",
         "commentary": content,
@@ -32,7 +62,7 @@ async def post_to_linkedin(
                 headers=headers,
                 json={
                     "initializeUploadRequest": {
-                        "owner": f"urn:li:person:{linkedin_id}",
+                        "owner": author,
                     }
                 },
             )

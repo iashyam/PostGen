@@ -28,7 +28,7 @@ async def close_db():
         client.close()
 
 
-def get_db() -> AsyncIOMotorDatabase:
+def get_db() -> AsyncIOMotorDatabase | None:
     return db
 
 
