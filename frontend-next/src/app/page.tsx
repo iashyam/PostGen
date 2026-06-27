@@ -6,7 +6,7 @@ import ImagePanel from '../components/create/ImagePanel';
 
 export default function CreatePost() {
   return (
-    <div className="flex gap-4">
+    <div className="flex items-stretch gap-5">
       <InputPanel />
       <PostEditor />
       <ImagePanel />

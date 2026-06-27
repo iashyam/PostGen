@@ -19,7 +19,16 @@ export default function RootLayout({
         <Toaster
           position="top-right"
           toastOptions={{
-            style: { background: '#1f2937', color: '#f3f4f6', border: '1px solid #374151' },
+            style: {
+              background: 'rgba(255, 255, 255, 0.08)',
+              color: '#e2e4ea',
+              border: '1px solid rgba(255, 255, 255, 0.08)',
+              backdropFilter: 'blur(20px)',
+              WebkitBackdropFilter: 'blur(20px)',
+              borderRadius: '12px',
+              fontSize: '13px',
+              fontWeight: 500,
+            },
           }}
         />
         <AppShell>{children}</AppShell>

@@ -15,9 +15,10 @@ export default function PostEditor() {
 
   const editor = useEditor({
     extensions: [
-      StarterKit,
+      StarterKit.configure({ link: false }),
       Link.configure({ openOnClick: false }),
     ],
+    immediatelyRender: true,
     content: '',
     onUpdate: ({ editor }) => {
       setGeneratedPost(editor.getText());
@@ -66,9 +67,9 @@ export default function PostEditor() {
   };
 
   return (
-    <div className="flex flex-1 flex-col rounded-xl border border-gray-800 bg-gray-900">
-      <div className="flex items-center justify-between border-b border-gray-800 px-4 py-2">
-        <h2 className="text-sm font-semibold text-gray-300">Generated Post</h2>
+    <div className="glass-card flex flex-1 flex-col overflow-hidden">
+      <div className="flex items-center justify-between px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <h2 className="text-[13px] font-semibold uppercase tracking-wider text-white/30">Generated Post</h2>
       </div>
 
       <RichToolbar editor={editor} />
@@ -77,21 +78,19 @@ export default function PostEditor() {
         <EditorContent editor={editor} />
       </div>
 
-      <div className="flex items-center justify-between border-t border-gray-800 px-4 py-3">
-        <span className={`text-xs ${charCount > 3000 ? 'text-red-400' : 'text-gray-500'}`}>
-          {charCount}/3000
+      <div className="flex items-center justify-between px-5 py-3" style={{ borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+        <span className={`text-xs font-medium ${charCount > 3000 ? 'text-red-400' : 'text-white/25'}`}>
+          {charCount.toLocaleString()}/3,000
         </span>
         <div className="flex gap-2">
-          <button
-            onClick={saveDraft}
-            className="flex items-center gap-1.5 rounded-lg bg-primary-600 px-4 py-2 text-sm font-medium text-white hover:bg-primary-700"
-          >
+          <button onClick={saveDraft} className="btn-primary !py-2 !px-4 !text-[13px] !rounded-md">
             <Save className="h-3.5 w-3.5" />
             Save Draft
           </button>
           <button
             onClick={copyToClipboard}
-            className="flex items-center gap-1.5 rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-300 hover:bg-gray-700"
+            className="btn-secondary !py-2 !px-3 !rounded-md"
+            title="Copy to clipboard"
           >
             <Copy className="h-3.5 w-3.5" />
           </button>

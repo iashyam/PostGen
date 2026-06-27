@@ -19,7 +19,7 @@ export default function RichToolbar({ editor }: Props) {
   };
 
   return (
-    <div className="flex gap-1 border-b border-gray-700 p-2">
+    <div className="flex gap-0.5 p-2" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
       <IconButton
         onClick={() => editor.chain().focus().toggleBold().run()}
         active={editor.isActive('bold')}

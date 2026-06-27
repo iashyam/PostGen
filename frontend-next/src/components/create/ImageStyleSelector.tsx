@@ -14,17 +14,18 @@ export default function ImageStyleSelector() {
 
   return (
     <div>
-      <label className="mb-2 block text-sm font-medium text-gray-300">Image Style</label>
+      <label className="mb-2 block text-xs font-medium text-white/40">Image Style</label>
       <div className="grid grid-cols-4 gap-2">
         {STYLES.map((s) => (
           <button
             key={s.id}
             onClick={() => setImageStyle(s.id)}
-            className={`rounded-lg border p-2 text-xs transition-colors ${
+            className={`rounded-lg py-2 px-1 text-xs font-medium transition-all duration-200 ${
               imageStyle === s.id
-                ? 'border-primary-500 bg-primary-600/20 text-primary-300'
-                : 'border-gray-700 bg-gray-800 text-gray-400 hover:border-gray-600'
+                ? 'bg-white/12 text-white ring-1 ring-primary-400/30'
+                : 'text-white/30 hover:bg-white/[0.04] hover:text-white/50'
             }`}
+            style={{ border: imageStyle === s.id ? '1px solid rgba(99,102,241,0.25)' : '1px solid rgba(255,255,255,0.06)' }}
           >
             {s.label}
           </button>

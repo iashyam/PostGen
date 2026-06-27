@@ -9,31 +9,29 @@ export default function GenerateButton() {
   const { generate } = useGeneratePost();
 
   const stepLabels: Record<string, string> = {
-    researching: 'Researching topic...',
+    researching: 'Researching...',
     drafting: 'Writing draft...',
-    refining: 'Refining post...',
+    refining: 'Refining...',
     complete: 'Done!',
   };
 
   return (
-    <div>
-      <button
-        onClick={generate}
-        disabled={!topic.trim() || isGenerating}
-        className="flex w-full items-center justify-center gap-2 rounded-lg bg-primary-600 px-4 py-3 text-sm font-semibold text-white transition-colors hover:bg-primary-700 disabled:cursor-not-allowed disabled:opacity-50"
-      >
-        {isGenerating ? (
-          <>
-            <Loader2 className="h-4 w-4 animate-spin" />
-            {stepLabels[generationStep] || 'Generating...'}
-          </>
-        ) : (
-          <>
-            <Sparkles className="h-4 w-4" />
-            Generate Post
-          </>
-        )}
-      </button>
-    </div>
+    <button
+      onClick={generate}
+      disabled={!topic.trim() || isGenerating}
+      className="btn-primary w-full"
+    >
+      {isGenerating ? (
+        <>
+          <Loader2 className="h-4 w-4 animate-spin" />
+          {stepLabels[generationStep] || 'Generating...'}
+        </>
+      ) : (
+        <>
+          <Sparkles className="h-4 w-4" />
+          Generate Post
+        </>
+      )}
+    </button>
   );
 }

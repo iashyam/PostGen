@@ -15,7 +15,12 @@ export default function InputPanel() {
     useAppStore();
 
   return (
-    <div className="flex w-80 shrink-0 flex-col gap-5 rounded-xl border border-gray-800 bg-gray-900 p-5">
+    <div className="glass-card flex w-80 shrink-0 flex-col overflow-hidden">
+      <div className="px-5 py-3" style={{ borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <h2 className="text-[13px] font-semibold uppercase tracking-wider text-white/30">Post Settings</h2>
+      </div>
+
+      <div className="flex flex-1 flex-col gap-6 p-5">
       <TopicInput />
 
       <TagInput
@@ -32,7 +37,10 @@ export default function InputPanel() {
 
       <ImageStyleSelector />
 
-      <GenerateButton />
+      <div className="mt-auto pt-2">
+        <GenerateButton />
+      </div>
+      </div>
     </div>
   );
 }

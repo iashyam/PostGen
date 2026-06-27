@@ -15,16 +15,16 @@ export default function PostCard({ post }: Props) {
   });
 
   return (
-    <div className="flex gap-4 rounded-xl border border-gray-800 bg-gray-900 p-4">
+    <div className="glass-card glass-card-hover flex gap-5 p-5">
       <div className="flex-1">
-        <p className="mb-1 text-xs text-gray-500">{date}</p>
-        <p className="whitespace-pre-line text-sm text-gray-300">{post.content}</p>
-        <div className="mt-3 flex gap-4 text-xs text-gray-500">
-          <span className="flex items-center gap-1">
+        <p className="mb-2 text-[11px] font-medium text-white/25">{date}</p>
+        <p className="whitespace-pre-line text-sm leading-relaxed text-white/60">{post.content}</p>
+        <div className="mt-4 flex gap-5 text-xs font-medium text-white/25">
+          <span className="flex items-center gap-1.5">
             <ThumbsUp className="h-3 w-3" />
             {post.engagement?.likes || 0}
           </span>
-          <span className="flex items-center gap-1">
+          <span className="flex items-center gap-1.5">
             <MessageCircle className="h-3 w-3" />
             {post.engagement?.comments || 0}
           </span>
@@ -34,7 +34,7 @@ export default function PostCard({ post }: Props) {
         <img
           src={post.image_url}
           alt=""
-          className="h-24 w-36 shrink-0 rounded-lg object-cover"
+          className="h-24 w-36 shrink-0 rounded-xl object-cover"
         />
       )}
     </div>

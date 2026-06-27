@@ -1,7 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
-import { Loader2 } from 'lucide-react';
+import { Loader2, FileText } from 'lucide-react';
 import { useDrafts } from '../../hooks/useDrafts';
 import DraftCard from '../../components/drafts/DraftCard';
 import useAppStore from '../../store/appStore';
@@ -28,17 +28,20 @@ export default function Drafts() {
 
   if (loading) {
     return (
-      <div className="flex items-center justify-center py-20">
-        <Loader2 className="h-8 w-8 animate-spin text-gray-400" />
+      <div className="flex items-center justify-center py-24">
+        <Loader2 className="h-6 w-6 animate-spin text-white/20" />
       </div>
     );
   }
 
   if (drafts.length === 0) {
     return (
-      <div className="py-20 text-center text-gray-500">
-        <p className="text-lg">No drafts yet</p>
-        <p className="mt-1 text-sm">Generate a post and save it as a draft</p>
+      <div className="flex flex-col items-center justify-center py-24">
+        <div className="mb-4 flex h-14 w-14 items-center justify-center rounded-2xl" style={{ background: 'rgba(255,255,255,0.04)' }}>
+          <FileText className="h-6 w-6 text-white/15" />
+        </div>
+        <p className="text-sm font-medium text-white/30">No drafts yet</p>
+        <p className="mt-1 text-xs text-white/15">Generate a post and save it as a draft</p>
       </div>
     );
   }

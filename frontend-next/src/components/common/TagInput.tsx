@@ -23,25 +23,26 @@ export default function TagInput({ label, tags, onAdd, onRemove }: Props) {
 
   return (
     <div>
-      <label className="mb-1 block text-sm font-medium text-gray-300">{label}</label>
+      <label className="mb-1.5 block text-xs font-medium text-white/40">{label}</label>
       <input
         type="text"
         value={input}
         onChange={(e) => setInput(e.target.value)}
         onKeyDown={handleKeyDown}
         placeholder="Type and press Enter"
-        className="mb-2 w-full rounded-lg border border-gray-700 bg-gray-800 px-3 py-2 text-sm text-gray-100 placeholder-gray-500 focus:border-primary-500 focus:outline-none focus:ring-1 focus:ring-primary-500"
+        className="input-field mb-2.5"
       />
       <div className="flex flex-wrap gap-1.5">
         {tags.map((tag, idx) => (
           <span
             key={idx}
-            className="inline-flex items-center gap-1 rounded-md bg-gray-800 px-2 py-1 text-xs text-gray-300"
+            className="inline-flex items-center gap-1.5 rounded-md px-2.5 py-1 text-xs font-medium text-white/60"
+            style={{ background: 'rgba(255,255,255,0.06)', border: '1px solid rgba(255,255,255,0.06)' }}
           >
             {tag}
             <button
               onClick={() => onRemove(idx)}
-              className="text-gray-500 hover:text-gray-200"
+              className="text-white/25 hover:text-white/60 transition-colors"
             >
               <X className="h-3 w-3" />
             </button>

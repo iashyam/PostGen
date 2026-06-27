@@ -17,44 +17,44 @@ export default function DraftCard({ draft, onDelete, onLoad }: Props) {
   });
 
   return (
-    <div className="rounded-xl border border-gray-800 bg-gray-900 p-4 transition-colors hover:border-gray-700">
-      <div className="mb-2 flex items-start justify-between">
+    <div className="glass-card glass-card-hover p-5">
+      <div className="mb-3 flex items-start justify-between">
         <div>
-          <h3 className="text-sm font-semibold text-gray-200">
+          <h3 className="text-sm font-semibold text-white/85">
             {draft.title || draft.topic || 'Untitled Draft'}
           </h3>
-          <p className="mt-0.5 text-xs text-gray-500">{date}</p>
+          <p className="mt-0.5 text-[11px] font-medium text-white/25">{date}</p>
         </div>
-        <div className="flex gap-1">
+        <div className="flex gap-0.5">
           <button
             onClick={() => onLoad(draft)}
-            className="rounded-md p-1.5 text-gray-400 hover:bg-gray-800 hover:text-gray-200"
+            className="rounded-lg p-2 text-white/25 transition-colors hover:bg-white/[0.06] hover:text-white/60"
             title="Edit"
           >
-            <Edit3 className="h-4 w-4" />
+            <Edit3 className="h-3.5 w-3.5" />
           </button>
           <button
             onClick={() => onDelete(draft._id)}
-            className="rounded-md p-1.5 text-gray-400 hover:bg-red-900/30 hover:text-red-400"
+            className="rounded-lg p-2 text-white/25 transition-colors hover:bg-red-500/10 hover:text-red-400"
             title="Delete"
           >
-            <Trash2 className="h-4 w-4" />
+            <Trash2 className="h-3.5 w-3.5" />
           </button>
         </div>
       </div>
 
-      <p className="line-clamp-3 text-sm text-gray-400">
+      <p className="line-clamp-3 text-sm leading-relaxed text-white/40">
         {draft.plain_text || 'No content'}
       </p>
 
-      <div className="mt-3 flex gap-2">
+      <div className="mt-4 flex gap-2">
         {draft.tone && (
-          <span className="rounded-md bg-gray-800 px-2 py-0.5 text-xs text-gray-400">
+          <span className="rounded-lg px-2.5 py-1 text-[11px] font-medium text-white/35" style={{ background: 'rgba(255,255,255,0.04)' }}>
             {draft.tone}
           </span>
         )}
         {draft.length && (
-          <span className="rounded-md bg-gray-800 px-2 py-0.5 text-xs text-gray-400">
+          <span className="rounded-lg px-2.5 py-1 text-[11px] font-medium text-white/35" style={{ background: 'rgba(255,255,255,0.04)' }}>
             {draft.length}
           </span>
         )}

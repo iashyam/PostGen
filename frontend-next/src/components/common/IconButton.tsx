@@ -16,10 +16,10 @@ export default function IconButton({ children, onClick, title, active, className
       type="button"
       onClick={onClick}
       title={title}
-      className={`rounded-md p-1.5 transition-colors ${
+      className={`rounded-lg p-1.5 transition-all duration-150 ${
         active
-          ? 'bg-primary-600 text-white'
-          : 'text-gray-400 hover:bg-gray-700 hover:text-gray-200'
+          ? 'bg-white/12 text-white'
+          : 'text-white/30 hover:bg-white/[0.06] hover:text-white/60'
       } ${className}`}
     >
       {children}
