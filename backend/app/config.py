@@ -5,6 +5,7 @@ class Settings(BaseSettings):
     # AI
     google_api_key: str = ""
     gemini_model: str = "gemini-2.0-flash"
+    imagen_model: str = "imagen-3.0-generate-002"
 
     # MongoDB
     mongodb_uri: str = "mongodb://localhost:27017"

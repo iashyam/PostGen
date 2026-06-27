@@ -1,3 +1,4 @@
+import asyncio
 import uuid
 
 import boto3
@@ -22,11 +23,15 @@ def get_s3_client():
 async def upload_image(image_bytes: bytes, content_type: str = "image/png") -> str:
     s3 = get_s3_client()
     key = f"images/{uuid.uuid4()}.png"
-    s3.put_object(
-        Bucket=settings.s3_bucket,
-        Key=key,
-        Body=image_bytes,
-        ContentType=content_type,
+    loop = asyncio.get_event_loop()
+    await loop.run_in_executor(
+        None,
+        lambda: s3.put_object(
+            Bucket=settings.s3_bucket,
+            Key=key,
+            Body=image_bytes,
+            ContentType=content_type,
+        ),
     )
     return key
 

@@ -22,6 +22,9 @@ export function useGenerateImage() {
         topic,
         style: imageStyle,
         post_summary: generatedPost.slice(0, 200),
+      }, {
+        baseURL: 'http://localhost:8000/api',
+        timeout: 120000,
       });
       setGeneratedImages(response.data);
       toast.success('Images generated!');

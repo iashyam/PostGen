@@ -1,3 +1,4 @@
+import asyncio
 from io import BytesIO
 
 from google import genai
@@ -16,6 +17,22 @@ STYLE_PROMPTS = {
 
 NUMBER_OF_VARIENTS: int = 2
 
+
+def _generate_image_sync(prompt: str) -> bytes | None:
+    client = genai.Client(api_key=settings.google_api_key)
+    response = client.models.generate_images(
+        model=settings.imagen_model,
+        prompt=prompt,
+        config=genai.types.GenerateImagesConfig(
+            number_of_images=1,
+            aspect_ratio="16:9",
+        ),
+    )
+    if response.generated_images:
+        return response.generated_images[0].image.image_bytes
+    return None
+
+
 async def generate_images(topic: str, style: str, post_summary: str) -> list[dict]:
     style_desc = STYLE_PROMPTS.get(style, STYLE_PROMPTS["Modern 3D"])
     prompt = (
@@ -26,28 +43,16 @@ async def generate_images(topic: str, style: str, post_summary: str) -> list[dic
         f"16:9 aspect ratio, high quality."
     )
 
-    client = genai.Client(api_key=settings.google_api_key)
+    loop = asyncio.get_event_loop()
     results = []
 
-    # Generate 2 variants
     for _ in range(NUMBER_OF_VARIENTS):
-        response = client.models.generate_images(
-            model="imagen-3.0-generate-002",
-            prompt=prompt,
-            config=genai.types.GenerateImagesConfig(
-                number_of_images=1,
-                aspect_ratio="16:9",
-            ),
-        )
+        img_bytes = await loop.run_in_executor(None, _generate_image_sync, prompt)
 
-        if response.generated_images:
-            img_bytes = response.generated_images[0].image.image_bytes
-
-            # Upload full image
+        if img_bytes:
             key = await upload_image(img_bytes)
             url = get_presigned_url(key)
 
-            # Create and upload thumbnail
             img = Image.open(BytesIO(img_bytes))
             img.thumbnail((400, 225))
             thumb_buffer = BytesIO()
