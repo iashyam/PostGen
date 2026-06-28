@@ -1,5 +1,5 @@
 import { create } from 'zustand';
-import type { GeneratedImage, User } from '../types';
+import type { GeneratedImage, ImageStyle, User } from '../types';
 
 interface AppState {
   // Input
@@ -7,7 +7,7 @@ interface AppState {
   keyPoints: string[];
   tone: string;
   length: string;
-  imageStyle: string;
+  imageStyle: ImageStyle;
 
   // Generated content
   generatedPost: string;
@@ -28,7 +28,7 @@ interface AppState {
   removeKeyPoint: (idx: number) => void;
   setTone: (t: string) => void;
   setLength: (l: string) => void;
-  setImageStyle: (s: string) => void;
+  setImageStyle: (s: ImageStyle) => void;
   setGeneratedPost: (p: string) => void;
   setIsGenerating: (v: boolean) => void;
   setGenerationStep: (s: string) => void;

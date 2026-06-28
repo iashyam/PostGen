@@ -68,4 +68,15 @@ export interface User {
 
 export type Tone = 'Professional' | 'Casual' | 'Inspirational' | 'Educational' | 'Storytelling';
 export type Length = 'Short' | 'Medium' | 'Long';
-export type ImageStyle = 'Modern 3D' | 'Minimal' | 'Isometric' | 'Realistic';
+export const IMAGE_STYLES = [
+  { id: 'Modern 3D', label: 'Modern 3D' },
+  { id: 'Minimal', label: 'Minimal' },
+  { id: 'Isometric', label: 'Isometric' },
+  { id: 'Photographic', label: 'Photo' },
+  { id: 'Gradient Abstract', label: 'Abstract' },
+  { id: 'Watercolor', label: 'Watercolor' },
+  { id: 'Infographic', label: 'Infographic' },
+  { id: 'Retro', label: 'Retro' },
+] as const;
+
+export type ImageStyle = (typeof IMAGE_STYLES)[number]['id'];

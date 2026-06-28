@@ -1,13 +1,7 @@
 'use client';
 
 import useAppStore from '../../store/appStore';
-
-const STYLES = [
-  { id: 'Modern 3D', label: 'Modern 3D' },
-  { id: 'Minimal', label: 'Minimal' },
-  { id: 'Isometric', label: 'Isometric' },
-  { id: 'Realistic', label: 'Realistic' },
-];
+import { IMAGE_STYLES } from '../../types';
 
 export default function ImageStyleSelector() {
   const { imageStyle, setImageStyle } = useAppStore();
@@ -16,7 +10,7 @@ export default function ImageStyleSelector() {
     <div>
       <label className="mb-2 block text-xs font-medium text-white/40">Image Style</label>
       <div className="grid grid-cols-4 gap-2">
-        {STYLES.map((s) => (
+        {IMAGE_STYLES.map((s) => (
           <button
             key={s.id}
             onClick={() => setImageStyle(s.id)}
