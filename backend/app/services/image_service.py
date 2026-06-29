@@ -116,7 +116,6 @@ def _build_prompt(topic: str, style: str, post_summary: str, variant: str) -> st
         f"REQUIREMENTS:\n"
         f"- Create a single, striking hero image for this LinkedIn post\n"
         f"- The image must visually represent the core idea of the topic\n"
-        f"- DO NOT include any text, words, letters, or numbers in the image\n"
         f"- DO NOT include any watermarks or logos\n"
         f"- Make it scroll-stopping — it should grab attention in a LinkedIn feed\n"
         f"- Maintain professional quality suitable for business social media\n"
