@@ -1,48 +1,39 @@
-.PHONY: install install-backend install-frontend dev dev-backend dev-frontend db db-stop build clean lint
+.PHONY: install install-backend install-frontend dev dev-backend dev-frontend build clean lint
 
 # ── Install ──────────────────────────────────────────
 install: install-backend install-frontend
 
 install-backend:
-	cd backend && pip install -r requirements.txt
+	@cd backend && \
+	if [ ! -d ".venv" ]; then \
+		echo "No virtual env found. Creating with uv..."; \
+		uv venv; \
+	fi; \
+	. .venv/bin/activate && uv pip install -r requirements.txt
 
 install-frontend:
-	cd frontend && npm install
+	cd frontend && yarn install
 
 # ── Development ──────────────────────────────────────
-dev: db
+dev:
 	@echo "Starting backend and frontend..."
 	$(MAKE) dev-backend &
 	$(MAKE) dev-frontend &
 	wait
 
 dev-backend:
-	cd backend && uvicorn app.main:app --reload --port 8000
+	cd backend && . .venv/bin/activate && uvicorn app.main:app --reload --port 8000
 
 dev-frontend:
-	cd frontend && npm run dev
-
-# ── Database ─────────────────────────────────────────
-db:
-	docker compose up mongodb -d
-
-db-stop:
-	docker compose down
+	cd frontend && yarn dev
 
 # ── Build ────────────────────────────────────────────
 build:
-	cd frontend && npm run build
-
-# ── Docker (full stack) ──────────────────────────────
-up:
-	docker compose up -d
-
-down:
-	docker compose down
+	cd frontend && yarn build
 
 # ── Lint / Check ─────────────────────────────────────
 lint:
-	cd frontend && npx tsc --noEmit
+	cd frontend && yarn tsc --noEmit
 
 # ── Setup ────────────────────────────────────────────
 setup: install
@@ -51,5 +42,5 @@ setup: install
 
 # ── Clean ────────────────────────────────────────────
 clean:
-	rm -rf frontend/dist frontend/node_modules backend/__pycache__
+	rm -rf frontend/.next frontend/node_modules backend/__pycache__
 	find backend -type d -name __pycache__ -exec rm -rf {} + 2>/dev/null || true

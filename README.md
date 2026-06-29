@@ -10,7 +10,7 @@ This app should cost you, but I won't. If you have your own APIs, then go ahead 
 
 **Backend:** FastAPI, LangGraph, LangChain + Google Gemini, Motor (async MongoDB), Pillow
 
-**Infrastructure:** MongoDB 7, AWS S3 (image storage), Docker Compose
+**Infrastructure:** MongoDB, AWS S3 (image storage)
 
 ## Features
 
@@ -24,9 +24,8 @@ This app should cost you, but I won't. If you have your own APIs, then go ahead 
 
 ## Prerequisites
 
-- Python 3.13+
-- Node.js 18+
-- Docker (for MongoDB)
+- Python 3.13+ and uv
+- Node.js 18+ and Yarn
 - Google API key (Gemini)
 - AWS credentials (S3, for image storage)
 - LinkedIn OAuth app (for publishing)
@@ -45,7 +44,7 @@ make setup
 make dev
 ```
 
-Backend runs at `http://localhost:8000`, frontend at `http://localhost:5173`.
+Backend runs at `http://localhost:8000`, frontend at `http://localhost:3000`.
 
 ## Environment Variables
 
@@ -68,13 +67,9 @@ Copy `backend/.env.example` to `backend/.env` and fill in:
 | Command | Description |
 |---|---|
 | `make setup` | Install deps + create `.env` from example |
-| `make dev` | Start MongoDB, backend, and frontend |
+| `make dev` | Start backend and frontend |
 | `make dev-backend` | Start backend only |
 | `make dev-frontend` | Start frontend only |
-| `make db` | Start MongoDB container |
-| `make db-stop` | Stop MongoDB container |
-| `make up` | Start full stack via Docker Compose |
-| `make down` | Stop all Docker containers |
 | `make build` | Build frontend for production |
 | `make lint` | Run TypeScript type check |
 | `make clean` | Remove build artifacts and caches |
