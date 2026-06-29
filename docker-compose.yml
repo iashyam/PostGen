@@ -1,28 +1,23 @@
 services:
-  mongodb:
-    image: mongo:7
-    ports:
-      - "27017:27017"
-    volumes:
-      - mongo_data:/data/db
-
   backend:
     build: ./backend
-    ports:
-      - "8000:8000"
     env_file:
       - ./backend/.env
-    depends_on:
-      - mongodb
-    environment:
-      - MONGODB_URI=mongodb://mongodb:27017
+    restart: unless-stopped
+    expose:
+      - "8000"
 
   frontend:
     build: ./frontend
+    restart: unless-stopped
     ports:
-      - "5173:5173"
+      - "3000:3000"
     depends_on:
       - backend
 
-volumes:
-  mongo_data:
+  tunnel:
+    image: cloudflare/cloudflared:latest
+    restart: unless-stopped
+    environment:
+      - TUNNEL_TOKEN=${CLOUDFLARE_TOKEN}
+    command: tunnel --no-autoupdate run --token ${CLOUDFLARE_TOKEN}
