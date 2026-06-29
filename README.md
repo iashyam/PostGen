@@ -6,7 +6,7 @@ This app should cost you, but I won't. If you have your own APIs, then go ahead 
 
 ## Tech Stack
 
-**Frontend:** React 19, TypeScript, Tailwind CSS v4, Vite, Zustand, TipTap editor, React Router
+**Frontend:** Next.js, TypeScript, Tailwind CSS v4, Zustand, TipTap editor
 
 **Backend:** FastAPI, LangGraph, LangChain + Google Gemini, Motor (async MongoDB), Pillow
 
