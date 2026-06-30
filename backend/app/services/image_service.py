@@ -34,17 +34,6 @@ STYLE_CONFIGS = {
         ),
         "color_guidance": "Limited palette of 3-4 harmonious colors with one accent color.",
     },
-    "Isometric": {
-        "description": "Isometric technical illustration",
-        "direction": (
-            "Create a detailed isometric illustration showing the concept as an "
-            "interconnected system. Use precise 30-degree isometric angles with "
-            "clean vector-style rendering. Include subtle shadows and depth layers "
-            "to create visual hierarchy. The style should feel like a premium "
-            "technical explainer from a top-tier business publication."
-        ),
-        "color_guidance": "Vibrant but professional palette with clear visual hierarchy.",
-    },
     "Photographic": {
         "description": "Editorial photography style",
         "direction": (
@@ -54,46 +43,6 @@ STYLE_CONFIGS = {
             "the rule of thirds. The image should feel authentic and aspirational."
         ),
         "color_guidance": "Natural, warm tones with professional color grading.",
-    },
-    "Gradient Abstract": {
-        "description": "Abstract gradient artwork",
-        "direction": (
-            "Create an abstract artwork using flowing gradient meshes, organic "
-            "shapes, and luminous color transitions. The composition should feel "
-            "ethereal and modern, like premium brand artwork from Stripe or Linear. "
-            "Use smooth color flows with occasional sharp geometric accents."
-        ),
-        "color_guidance": "Rich, vibrant gradients with complementary color transitions.",
-    },
-    "Watercolor": {
-        "description": "Digital watercolor illustration",
-        "direction": (
-            "Create a digital watercolor illustration with soft, flowing washes "
-            "of color, visible paper texture, and delicate ink outlines. The style "
-            "should feel artistic yet professional — like a high-end editorial "
-            "illustration. Blend organic watercolor bleeds with precise details."
-        ),
-        "color_guidance": "Soft, harmonious watercolor palette with subtle color bleeds.",
-    },
-    "Infographic": {
-        "description": "Data-driven infographic visual",
-        "direction": (
-            "Create a visually compelling infographic-style illustration that "
-            "represents the key concept through charts, icons, connecting lines, "
-            "and data visualization elements. The design should be clean, structured, "
-            "and information-rich while remaining visually appealing."
-        ),
-        "color_guidance": "Professional palette with high contrast for data readability.",
-    },
-    "Retro": {
-        "description": "Retro/vintage style illustration",
-        "direction": (
-            "Create a retro-inspired illustration with vintage aesthetics — "
-            "think mid-century modern design meets contemporary subject matter. "
-            "Use halftone textures, retro typography-friendly layouts, warm analog "
-            "tones, and classic illustration techniques updated for modern appeal."
-        ),
-        "color_guidance": "Warm vintage palette with muted tones and occasional bold accents.",
     },
 }
 

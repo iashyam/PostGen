@@ -42,13 +42,14 @@ def _get_llm():
 
 async def research_topic(state: PostState) -> dict:
     llm = _get_llm()
-    key_points_str = "\n".join(f"- {kp}" for kp in state["key_points"])
+    key_points_str = "\n".join(f"- {kp}" for kp in state["key_points"]) if state["key_points"] else ""
+    key_points_section = f"Key points:\n{key_points_str}\n\n" if key_points_str else ""
     prompt = (
-        f"You are a LinkedIn content research assistant. Given a topic and key points, "
+        f"You are a LinkedIn content research assistant. Given a topic, "
         f"identify relevant trends, statistics, industry context, and compelling angles "
         f"that would resonate with a professional LinkedIn audience.\n\n"
         f"Topic: {state['topic']}\n\n"
-        f"Key points:\n{key_points_str}\n\n"
+        f"{key_points_section}"
         f"Provide a concise research brief (3-5 bullet points) with actionable insights."
     )
     response = await llm.ainvoke(prompt)
@@ -59,12 +60,13 @@ async def generate_draft(state: PostState) -> dict:
     llm = _get_llm()
     tone_desc = TONE_MAP.get(state["tone"], TONE_MAP["Professional"])
     length_desc = LENGTH_MAP.get(state["length"], LENGTH_MAP["Medium"])
-    key_points_str = "\n".join(f"- {kp}" for kp in state["key_points"])
+    key_points_str = "\n".join(f"- {kp}" for kp in state["key_points"]) if state["key_points"] else ""
+    key_points_section = f"Key points:\n{key_points_str}\n\n" if key_points_str else ""
 
     prompt = (
         f"Write a LinkedIn post draft based on the following:\n\n"
         f"Topic: {state['topic']}\n"
-        f"Key points:\n{key_points_str}\n\n"
+        f"{key_points_section}"
         f"Research context:\n{state['research']}\n\n"
         f"Requirements:\n"
         f"- Tone: {state['tone']} ({tone_desc})\n"
