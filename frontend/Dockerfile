@@ -6,6 +6,8 @@ COPY package.json yarn.lock ./
 RUN yarn install --frozen-lockfile
 
 COPY . .
+
+ENV BACKEND_URL=http://backend:8000
 RUN yarn build
 
 FROM node:20-alpine AS runner
