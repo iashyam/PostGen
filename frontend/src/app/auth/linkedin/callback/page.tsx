@@ -4,8 +4,8 @@ import { Suspense, useEffect } from 'react';
 import { useSearchParams, useRouter } from 'next/navigation';
 import { Loader2 } from 'lucide-react';
 import toast from 'react-hot-toast';
-import api from '../../../lib/api';
-import useAppStore from '../../../store/appStore';
+import api from '../../../../lib/api';
+import useAppStore from '../../../../store/appStore';
 
 function CallbackHandler() {
   const searchParams = useSearchParams();
