@@ -61,6 +61,8 @@ Copy `backend/.env.example` to `backend/.env` and fill in:
 | `LINKEDIN_CLIENT_ID` | LinkedIn OAuth client ID |
 | `LINKEDIN_CLIENT_SECRET` | LinkedIn OAuth client secret |
 | `SECRET_KEY` | JWT signing secret |
+| `FRONTEND_URL` | Frontend URL for CORS (default: `http://localhost:3000`) |
+| `APP_URL` | Public URL (e.g. Cloudflare tunnel domain) for CORS |
 
 ## Make Commands
 

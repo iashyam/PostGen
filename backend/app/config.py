@@ -25,7 +25,8 @@ class Settings(BaseSettings):
 
     # App
     secret_key: str = "change-me-to-a-random-string"
-    frontend_url: str = "http://localhost:5173"
+    frontend_url: str = "http://localhost:3000"
+    app_url: str = ""
 
     model_config = {"env_file": ".env", "env_file_encoding": "utf-8"}
 
