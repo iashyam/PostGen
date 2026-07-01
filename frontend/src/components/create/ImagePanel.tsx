@@ -66,7 +66,7 @@ export default function ImagePanel() {
             className="btn-secondary mt-5 w-full"
           >
             <RefreshCw className={`h-4 w-4 ${isGeneratingImage ? 'animate-spin' : ''}`} />
-            Regenerate Image
+            {generatedImages.length > 0 ? 'Regenerate Image' : 'Generate Image'}
           </button>
         </div>
       </div>
