@@ -107,7 +107,7 @@ async def linkedin_callback(db: DB, code: str, state: str, response: Response):
         path="/api/auth",
     )
 
-    return {"token": access_token, "user": {"name": user_doc["name"], "avatar_url": user_doc.get("avatar_url", "")}}
+    return {"token": access_token, "user_id": user_id, "user": {"name": user_doc["name"], "avatar_url": user_doc.get("avatar_url", "")}}
 
 
 @router.post("/refresh")
