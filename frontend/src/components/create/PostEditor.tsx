@@ -4,14 +4,16 @@ import { useEffect } from 'react';
 import { useEditor, EditorContent } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
 import Link from '@tiptap/extension-link';
-import { Copy, Save } from 'lucide-react';
+import { Copy, Save, Send } from 'lucide-react';
 import toast from 'react-hot-toast';
 import api from '../../lib/api';
 import useAppStore from '../../store/appStore';
+import { useLinkedIn } from '../../hooks/useLinkedIn';
 import RichToolbar from './RichToolbar';
 
 export default function PostEditor() {
-  const { generatedPost, setGeneratedPost } = useAppStore();
+  const { generatedPost, setGeneratedPost, user } = useAppStore();
+  const { postToLinkedIn } = useLinkedIn();
 
   const editor = useEditor({
     extensions: [
@@ -83,6 +85,12 @@ export default function PostEditor() {
           {charCount.toLocaleString()}/3,000
         </span>
         <div className="flex gap-2">
+          {user && (
+            <button onClick={postToLinkedIn} className="btn-primary !py-2 !px-4 !text-[13px] !rounded-md">
+              <Send className="h-3.5 w-3.5" />
+              Post to LinkedIn
+            </button>
+          )}
           <button onClick={saveDraft} className="btn-primary !py-2 !px-4 !text-[13px] !rounded-md">
             <Save className="h-3.5 w-3.5" />
             Save Draft
