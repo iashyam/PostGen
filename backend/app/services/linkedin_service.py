@@ -4,7 +4,7 @@ import httpx
 async def fetch_managed_pages(access_token: str) -> list[dict]:
     headers = {
         "Authorization": f"Bearer {access_token}",
-        "LinkedIn-Version": "202401",
+        "LinkedIn-Version": "202506",
         "X-Restli-Protocol-Version": "2.0.0",
     }
     async with httpx.AsyncClient() as client:
@@ -35,7 +35,7 @@ async def post_to_linkedin(
     headers = {
         "Authorization": f"Bearer {access_token}",
         "Content-Type": "application/json",
-        "LinkedIn-Version": "202401",
+        "LinkedIn-Version": "202506",
         "X-Restli-Protocol-Version": "2.0.0",
     }
 
