@@ -57,18 +57,21 @@ def _build_prompt(topic: str, style: str, post_summary: str, variant: str) -> st
     return (
         f"You are an expert visual designer creating a LinkedIn post image.\n\n"
         f"TOPIC: {topic}\n"
-        f"POST CONTEXT: {post_summary[:300]}\n\n"
+        f"FULL POST CONTENT:\n{post_summary}\n\n"
+        f"Read the post above carefully. The image MUST directly illustrate the specific ideas, "
+        f"arguments, or story in this post — not just the general topic.\n\n"
         f"VISUAL STYLE: {config['description']}\n"
         f"CREATIVE DIRECTION: {config['direction']}\n"
         f"COLOR GUIDANCE: {config['color_guidance']}\n\n"
         f"COMPOSITION: {variant}\n\n"
         f"REQUIREMENTS:\n"
-        f"- Create a single, striking hero image for this LinkedIn post\n"
-        f"- The image must visually represent the core idea of the topic\n"
+        f"- The image must represent the SPECIFIC message of the post, not a generic illustration of the topic\n"
+        f"- Include bold, readable text or a key phrase from the post as typography in the image\n"
+        f"- The text should be a short headline (3-8 words) that captures the post's main takeaway\n"
         f"- DO NOT include any watermarks or logos\n"
         f"- Make it scroll-stopping — it should grab attention in a LinkedIn feed\n"
         f"- Maintain professional quality suitable for business social media\n"
-        f"- Use strong composition with clear focal point and visual hierarchy\n"
+        f"- Aspect ratio: landscape (1200x627 LinkedIn recommended)\n"
     )
 
 

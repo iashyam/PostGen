@@ -21,7 +21,7 @@ export function useGenerateImage() {
       const response = await api.post('/generate-image', {
         topic,
         style: imageStyle,
-        post_summary: generatedPost.slice(0, 200),
+        post_summary: generatedPost,
       }, {
         timeout: 120000,
       });
